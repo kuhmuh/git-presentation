@@ -7,18 +7,64 @@
       @import url(https://fonts.googleapis.com/css?family=Yanone+Kaffeesatz);
       @import url(https://fonts.googleapis.com/css?family=Droid+Serif:400,700,400italic);
       @import url(https://fonts.googleapis.com/css?family=Ubuntu+Mono:400,700,400italic);
-      body { font-family: 'Droid Serif'; }
       h1, h2, h3 {
         font-family: 'Yanone Kaffeesatz';
-        font-weight: normal;
+        font-weight: 400;
+        margin-bottom: 0;
       }
-      .remark-code, .remark-inline-code { font-family: 'Ubuntu Mono'; }
+      .small * {
+        font-size: small !important;
+      }
+      img {
+        width: 100%;
+      }
+      code {
+        border-radius: 5px;
+      }
+      .inverse {
+        background: #272822;
+        color: #777872;
+        text-shadow: 0 0 20px #333;
+      }
+      .inverse h1, .inverse h2 {
+        color: #f3f3f3;
+        line-height: 0.8em;
+      }
+      .footnote {
+        position: absolute;
+        font-size: small;
+        bottom: 3em;
+        right: 3em;
+      }
+      /* styling only necessary for displaying source */
+      #source {
+        position: absolute;
+        display: none;
+        font-family: monospace;
+        font-size: medium;
+        background: #333333;
+        color: white;
+        padding: 10px;
+        text-align: left;
+        width: 65%;
+        height: 70%;
+        z-index: 1000;
+      }
+      #overlay {
+        position: absolute;
+        display: none;
+        background: black;
+        width: 100%;
+        height: 100%;
+        opacity: 0.2;
+        z-index: 999;
+      }
     </style>
   </head>
   <body>
     <textarea id="source">
 
-class: center, middle
+class: center, middle, inverse
 
 # Git's verrückte Reise durch die Zeit
 
@@ -32,27 +78,194 @@ class: center, middle
 ![Landscape](./assets/bill-and-ted-1989.jpg)
 ---
 # Agenda
-1.
+## Die Vergangenheit
+1. Was habe ich, was haben die anderen gemacht?
+1. Wie soll das aussehen?
+
+## Die Änderung der Vergangenheit
+Das könnte besser sein...
+
+## Ein Branch Modell
+Wie kommen wir am Ende zusammen?
 ---
-# git log
+# Die Vergangenheit
 
-    !shell
-    $ git log
-
-
+Übersicht mit `git log --oneline`
 
 ```terminal
-josh@brick ~/repos/aha $ git log -2
-<span style="color:olive;">commit 36b0a3af174e204c8d0a7a993ad467cd7be39bca</span>
-Author: Ziz <zizsdl@googlemail.com>
-Date:   Fri Aug 3 10:29:43 2012 +0200
-    Small version changes, make clean, merging, etc.
-...
+stefan@StefansMBP ~/develop/PIM $ git log --oneline
+<span style="color:yellow;">03cbbe0</span> Fix missing libfreetype6 and fontmodule dependencies for java
+<span style="color:yellow;">6611e50</span> Do not try to package client project as jar
+<span style="color:yellow;">9e58b51</span> Gitignore all IntelliJ specific files
+<span style="color:yellow;">1d07a61</span> Add notification for successful export
+<span style="color:yellow;">5d02fc9</span> Fix copy of template file from jar
+<span style="color:yellow;">f38fb84</span> Fix editor notification text
+<span style="color:yellow;">dc3b240</span> Add error handling for export
+<span style="color:yellow;">0cce4ec</span> Fix Findbugs errors
+<span style="color:yellow;">4a64c98</span> Add export button to product grid
+<span style="color:yellow;">59a807a</span> add product export controller
+<span style="color:yellow;">255632a</span> add export service
+<span style="color:yellow;">da7264d</span> Add method to fill an ODS file
+<span style="color:yellow;">8778be8</span> Add service for ODS file export
+<span style="color:yellow;">b7d7721</span> PIM-9 Create and show products
+<span style="color:yellow;">1d5b93d</span> PIM-7 showing branch name and commitId (#3)
+<span style="color:yellow;">b37475e</span> added JenkinsFile, DockerFile, SpotBugs, PMD, CheckStyle (#2)
+<span style="color:yellow;">20c6f4d</span> initial commit
+<span style="color:yellow;">ba60768</span> Initial commit
 ```
+---
+# Die Vergangenheit
+Details mit `git log`
+
+```terminal
+stefan@StefansMBP ~/develop/PIM $ git log
+<span style="color:yellow;">commit 03cbbe021eca7b05f9f185ab9fa0463b0f858fe7</span>
+Author: stefan.schmitz &lt;stefan.schmitz@fabfab.com&gt;
+Date:   Mon Nov 4 14:24:49 2019 +0100
+
+    Fix missing libfreetype6 and fontmodule dependencies for java
+
+<span style="color:yellow;">commit 6611e505c90397493efb3b976a6192435baef8ec</span>
+Author: stefan.schmitz &lt;stefan.schmitz@fabfab.com&gt;
+Date:   Mon Nov 4 12:38:26 2019 +0100
+
+    Do not try to package client project as jar
+
+<span style="color:yellow;">commit 9e58b51007c017f6e6ee65583499ca978d44099f</span>
+Author: stefan.schmitz &lt;stefan.schmitz@fabfab.com&gt;
+Date:   Mon Nov 4 12:36:29 2019 +0100
+
+    Gitignore all IntelliJ specific files
+
+<span style="color:yellow;">commit 1d07a6174efc57b96808c1d08150a90898a78910</span>
+Author: stefan.schmitz &lt;stefan.schmitz@fabfab.com&gt;
+Date:   Mon Nov 4 12:26:14 2019 +0100
+
+    Add notification for successful export
+```
+---
+# Die Vergangenheit
+So kann das irgendwann auch aussehen ...
+
+![Git-Aaaargh](./assets/git_commit_2x.png)
+---
+# Die Vergangenheit
+Wie soll es denn aussehen? ( 🔜 https://chris.beams.io/posts/git-commit/)
+
+.small[
+```terminal
+$ git log --oneline -5 --author cbeams --before "Fri Mar 26 2009
+
+e5f4b49 Re-adding ConfigurationPostProcessorTests after its brief removal in r814. @Ignore-ing the testCglibClassesAreLoadedJustInTimeForEnhancement() method as it turns out this was one of the culprits in the recent build breakage. The classloader hacking causes subtle downstream effects, breaking unrelated tests. The test method is still useful, but should only be run on a manual basis to ensure CGLIB is not prematurely classloaded, and should not be run as part of the automated build.
+2db0f12 fixed two build-breaking issues: + reverted ClassMetadataReadingVisitor to revision 794 + eliminated ConfigurationPostProcessorTests until further investigation determines why it causes downstream tests to fail (such as the seemingly unrelated ClassPathXmlApplicationContextTests)
+147709f Tweaks to package-info.java files
+22b25e0 Consolidated Util and MutableAnnotationUtils classes into existing AsmUtils
+7f96f57 polishing
+```
+]
+
+oder
+
+.small[
+```terminal
+$ git log --oneline -5 --author pwebb --before "Sat Aug 30 2014"
+
+5ba3db6 Fix failing CompositePropertySourceTests
+84564a0 Rework @PropertySource early parsing logic
+e142fd1 Add tests for ImportSelector meta-data
+887815f Update docbook dependency and generate epub
+ac8326d Polish mockito usage
+```
+]
+
+## Überlegungen
+* Was ist lesbarer?
+* Was ist der Sinn?
 
 ---
+# Die Vergangenheit
+Wie soll es denn nun aussehen?
 
-# Introduction
+Die 7 Goldene Regeln für eine gute Commit Message:
+
+1. Trenne Thema und Textkörper durch eine leere Zeile<br>
+Bei vielen Git Tools führt das zu einer besseren Anzeige der commit message
+1. Begrenze das Thema auf 50 Zeichen<br>
+siehe oben
+1. Beginne das Thema mit einem Großbuchstaben<br>
+Einheitlicher look der Commit messages
+1. Beende die Themenzeile nicht mit einem Punkt
+Unnötig, also weglassen
+1. Benutze Imperativ
+Der commit macht etwas, daher sollte eine commit message immer im Imperativ sagen, was er macht.<br>
+Merkregel: *If applied, this commit will* **commit message**
+1. Begrenze den Textkörper auf 72 Zeichen<br>
+Einheitlicher look der Commit messages
+1. Beschreibe im Textkörper das was und warum und nicht das wie<br>
+Das *wie* sieht man im Diff, das **warum** und der **Kontext** sind viel viel wichtiger.
+
+
+---
+# Die Vergangenheit
+So soll es aussehen!
+
+.small[
+```terminal
+Summarize changes in around 50 characters or less
+
+More detailed explanatory text, if necessary. Wrap it to about 72
+characters or so. In some contexts, the first line is treated as the
+subject of the commit and the rest of the text as the body. The
+blank line separating the summary from the body is critical (unless
+you omit the body entirely); various tools like `log`, `shortlog`
+and `rebase` can get confused if you run the two together.
+
+Explain the problem that this commit is solving. Focus on why you
+are making this change as opposed to how (the code explains that).
+Are there side effects or other unintuitive consequences of this
+change? Here's the place to explain them.
+
+Further paragraphs come after blank lines.
+
+ - Bullet points are okay, too
+
+ - Typically a hyphen or asterisk is used for the bullet, preceded
+   by a single space, with blank lines in between, but conventions
+   vary here
+
+If you use an issue tracker, put references to them at the bottom,
+like this:
+
+Resolves: #123
+See also: #456, #789
+```
+]
+
+---
+# Die Änderung der Vergangenheit
+Wie lösen wir den Widerspruch?
+
+*Commit Early And Often*  ⚡️ **Goldene Regeln einer Commit Message**
+
+```terminal
+git rebase
+```
+
+... to the rescue:
+
+* Kleinteilig entwickeln und commiten -> Entspannt und ohne Angst arbeiten.
+
+* Nach Abschluss die *git Vergangenheit* sinnvoll ändern
+
+## 🔥Achtung 🔥
+Remote repository nur in Absprache mit den Kollegen ändern!
+## 🔥Achtung 🔥
+
+---
+class: middle,center,inverse
+
+# **Live Hacking!**
+## toyproject
 
     </textarea>
     <script src="https://remarkjs.com/downloads/remark-latest.min.js" type="text/javascript">
